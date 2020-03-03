@@ -82,7 +82,7 @@ public class BasicOpMode_Iterative extends OpMode
         leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
         rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
         leftFrontMotor.setPower(power);
-        leftBackMotor.setPower(power);
+        leftBackMotor.setPower(-power);
         rightFrontMotor.setPower(power);
         rightBackMotor.setPower(power);
     }
