@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="Basic: Test Iterative OpMode", group="Iterative Opmode")
 @Disabled
-public class BasicOpMode_Iterative extends OpMode
+public class TeleopModeDrive extends OpMode
 {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -79,10 +79,10 @@ public class BasicOpMode_Iterative extends OpMode
     void moveRegular(double power) {
         leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
         rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
         leftFrontMotor.setPower(power);
-        leftBackMotor.setPower(-power);
+        leftBackMotor.setPower(power);
         rightFrontMotor.setPower(power);
         rightBackMotor.setPower(power);
     }
@@ -108,53 +108,9 @@ public class BasicOpMode_Iterative extends OpMode
         rightFrontMotor.setPower(power);
         rightBackMotor.setPower(power);
     }
-    
-       void moveLeftStrafe(double power) {
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftFrontMotor.setPower(power);
-        leftBackMotor.setPower(power);
-        rightFrontMotor.setPower(power);
-        rightBackMotor.setPower(power);
-    }
 
-    void moveRightStrafe(double power) {
-        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftFrontMotor.setPower(power);
-        leftBackMotor.setPower(power);
-        rightFrontMotor.setPower(power);
-        rightBackMotor.setPower(power);
-    }
-    void moveRCornerStrafeForward(double power) {
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftFrontMotor.setPower(power);
-        rightBackMotor.setPower(power);
-    }
-    void moveLCornerStrafeForward(double power) {
-        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftFrontMotor.setPower(power);
-        rightBackMotor.setPower(power);
-    }
-    void moveLCornerStrafeBackward(double power) {
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftFrontMotor.setPower(power);
-        rightBackMotor.setPower(power);
-    }
-    void moveRCornerStrafeBackward(double power) {
-        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftFrontMotor.setPower(power);
-        rightBackMotor.setPower(power);
-    }
-        /*
+
+    /*
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
     @Override
@@ -173,16 +129,16 @@ public class BasicOpMode_Iterative extends OpMode
         dpad_up = gamepad1.dpad_up;
         dpad_down = gamepad1.dpad_down;
 
-        double power = rightTrigger+leftTrigger;
-        
-        // Setting up Null Zone for the robot
-         if (power < 0.05 & power > -0.05) {
-             power = 0;
-         }
+        double power = rightTrigger + leftTrigger;
 
-         if (left_stick_x < 0.05 & left_stick_x > -0.05) {
-             left_stick_x = 0;
-         }
+        // Setting up Null Zone for the robot
+        if (power < 0.05 & power > -0.05) {
+            power = 0;
+        }
+
+        if (left_stick_x < 0.05 & left_stick_x > -0.05) {
+            left_stick_x = 0;
+        }
 
         // allows robot to move fowards and backwards
         if (left_stick_x == 0) {
@@ -191,41 +147,15 @@ public class BasicOpMode_Iterative extends OpMode
             moveLeft(power);
         } else if (left_stick_x > 0) {
             moveRight(power);
-        if ( (dpad_right = true) & (dpad_up = true) ) {
-            moveRCornerStrafeForward(power);
         }
-
-        if ( (dpad_right = true) & (dpad_up = true) ) {
-            moveLCornerStrafeForward(power);
-        }
-
-        if ( (dpad_right = true) & (dpad_up = true) ) {
-            moveLCornerStrafeBackward(power);
-        }
-
-        if ( (dpad_right = true) & (dpad_up = true) ) {
-            moveRCornerStrafeBackward(power);
-        }
-
-        if (dpad_right = true) {
-             moveRightStrafe(power);
-        }
-
-        if (dpad_left = true) {
-             moveLCornerStrafeForward(power);
-        }
-        
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "power (%.2f)", power);
     }
-
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-
-    public void stop() {
-         }
-        }
+        /*
+         * Code to run ONCE after the driver hits STOP
+         */
+ public void stop(){
+ }
 }
