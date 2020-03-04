@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -109,7 +110,26 @@ public class TeleopModeDrive extends OpMode
         rightBackMotor.setPower(power);
     }
 
-
+    void strafeRight(double power) {
+        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontMotor.setPower(power);
+        leftBackMotor.setPower(power);
+        rightFrontMotor.setPower(power);
+        rightBackMotor.setPower(power);
+    }
+    void strafeLeft(double power) {
+        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setPower(power);
+        leftBackMotor.setPower(power);
+        rightFrontMotor.setPower(power);
+        rightBackMotor.setPower(power);
+    }
     /*
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
@@ -118,8 +138,8 @@ public class TeleopModeDrive extends OpMode
 
         // Assigns the values to the variables that are needed
 
-        rightTrigger = gamepad1.right_trigger;
-        leftTrigger = -gamepad1.left_trigger;
+        rightTrigger = -gamepad1.right_trigger;
+        leftTrigger = gamepad1.left_trigger;
         left_stick_x = gamepad1.left_stick_x;
         left_stick_y = gamepad1.left_stick_y;
         right_stick_x = gamepad1.right_stick_x;
@@ -147,6 +167,10 @@ public class TeleopModeDrive extends OpMode
             moveLeft(power);
         } else if (left_stick_x > 0) {
             moveRight(power);
+        } else if ((right_stick_x > 0) & (left_stick_x == 0)) {
+            strafeRight(power);
+        } else if ((right_stick_x < 0) & (left_stick_x == 0)){
+            strafeLeft(power);
         }
 
         // Show the elapsed game time and wheel power.
