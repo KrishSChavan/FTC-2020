@@ -37,6 +37,7 @@ public class TeleopModeDrive extends OpMode
     boolean dpad_left;
     boolean dpad_up;
     boolean dpad_down;
+    boolean a;
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -52,7 +53,9 @@ public class TeleopModeDrive extends OpMode
         leftBackMotor  = hardwareMap.get(DcMotor.class, "lbm");
         rightBackMotor = hardwareMap.get(DcMotor.class, "rbm");
         servo = hardwareMap.servo.get("armServo");
-        servo.setPosition(servoPosition);
+      
+      //servo position = 0.0 base
+       servo.setPosition(servoPosition);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -153,6 +156,7 @@ public class TeleopModeDrive extends OpMode
         dpad_right = gamepad1.dpad_right;
         dpad_up = gamepad1.dpad_up;
         dpad_down = gamepad1.dpad_down;
+        a = gamepad1.a;
 
         double power = rightTrigger + leftTrigger;
 
@@ -178,7 +182,9 @@ public class TeleopModeDrive extends OpMode
             strafeLeft(power);
         }
         
-       
+       while (a){
+          servoPosition = 1;
+       }
         
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
