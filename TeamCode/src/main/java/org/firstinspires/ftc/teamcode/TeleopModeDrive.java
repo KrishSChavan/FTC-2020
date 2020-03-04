@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -22,6 +23,8 @@ public class TeleopModeDrive extends OpMode
     private DcMotor rightFrontMotor = null;
     private DcMotor leftBackMotor = null;
     private DcMotor rightBackMotor = null;
+    private Servo servo = null;
+    double servoPosition = 0.0;
 
     // Sets variables to 0, to reset them before they are used
     double leftTrigger = 0;
@@ -48,6 +51,8 @@ public class TeleopModeDrive extends OpMode
         rightFrontMotor = hardwareMap.get(DcMotor.class, "rfm");
         leftBackMotor  = hardwareMap.get(DcMotor.class, "lbm");
         rightBackMotor = hardwareMap.get(DcMotor.class, "rbm");
+        servo = hardwareMap.servo.get("armServo");
+        servo.setPosition(servoPosition);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -80,10 +85,10 @@ public class TeleopModeDrive extends OpMode
     void moveRegular(double power) {
         leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
         rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
         leftFrontMotor.setPower(power);
-        leftBackMotor.setPower(-power);
+        leftBackMotor.setPower(power);
         rightFrontMotor.setPower(power);
         rightBackMotor.setPower(power);
     }
@@ -103,7 +108,7 @@ public class TeleopModeDrive extends OpMode
         leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
         leftFrontMotor.setPower(power);
         leftBackMotor.setPower(power);
         rightFrontMotor.setPower(power);
@@ -172,7 +177,9 @@ public class TeleopModeDrive extends OpMode
         } else if ((right_stick_x < 0) & (left_stick_x == 0)){
             strafeLeft(power);
         }
-
+        
+       
+        
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "power (%.2f)", power);
