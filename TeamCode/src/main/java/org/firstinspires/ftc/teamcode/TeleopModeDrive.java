@@ -80,10 +80,10 @@ public class TeleopModeDrive extends OpMode
     void moveRegular(double power) {
         leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
         rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
         leftFrontMotor.setPower(power);
-        leftBackMotor.setPower(power);
+        leftBackMotor.setPower(-power);
         rightFrontMotor.setPower(power);
         rightBackMotor.setPower(power);
     }
@@ -103,7 +103,7 @@ public class TeleopModeDrive extends OpMode
         leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
         leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
         leftFrontMotor.setPower(power);
         leftBackMotor.setPower(power);
         rightFrontMotor.setPower(power);
