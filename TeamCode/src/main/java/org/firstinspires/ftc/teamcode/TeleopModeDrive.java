@@ -7,14 +7,12 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 
-
-@TeleOp(name="Basic: Test Iterative OpMode", group="Iterative Opmode")
-@Disabled
+    
+@TeleOp(name="Basic IT", group="Iterative Opmode")
 public class TeleopModeDrive extends OpMode
 {
     // Declare OpMode members.
@@ -24,8 +22,8 @@ public class TeleopModeDrive extends OpMode
     private DcMotor leftBackMotor = null;
     private DcMotor rightBackMotor = null;
     private Servo servo = null;
-    double servoPosition = 0.0;
-
+    double servoPosition = 0.8 ;
+  
     // Sets variables to 0, to reset them before they are used
     double leftTrigger = 0;
     double rightTrigger = 0;
@@ -38,6 +36,10 @@ public class TeleopModeDrive extends OpMode
     boolean dpad_up;
     boolean dpad_down;
     boolean a;
+    boolean y;
+    boolean x;
+    boolean b;
+    
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -52,10 +54,10 @@ public class TeleopModeDrive extends OpMode
         rightFrontMotor = hardwareMap.get(DcMotor.class, "rfm");
         leftBackMotor  = hardwareMap.get(DcMotor.class, "lbm");
         rightBackMotor = hardwareMap.get(DcMotor.class, "rbm");
-        servo = hardwareMap.servo.get("armServo");
-      
-      //servo position = 0.0 base
-       servo.setPosition(servoPosition);
+        servo = hardwareMap.get(Servo.class, "armServo");
+        
+        
+        servo.setPosition(0);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -117,27 +119,10 @@ public class TeleopModeDrive extends OpMode
         rightFrontMotor.setPower(power);
         rightBackMotor.setPower(power);
     }
+    
+  
 
-    void strafeRight(double power) {
-        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftFrontMotor.setPower(power);
-        leftBackMotor.setPower(power);
-        rightFrontMotor.setPower(power);
-        rightBackMotor.setPower(power);
-    }
-    void strafeLeft(double power) {
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
-        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftFrontMotor.setPower(power);
-        leftBackMotor.setPower(power);
-        rightFrontMotor.setPower(power);
-        rightBackMotor.setPower(power);
-    }
+
     /*
      * Code to run REPEATEDLY after the driver hits PLAY but before they hit STOP
      */
@@ -146,8 +131,8 @@ public class TeleopModeDrive extends OpMode
 
         // Assigns the values to the variables that are needed
 
-        rightTrigger = -gamepad1.right_trigger;
-        leftTrigger = gamepad1.left_trigger;
+        rightTrigger = gamepad1.right_trigger;
+        leftTrigger = -gamepad1.left_trigger;
         left_stick_x = gamepad1.left_stick_x;
         left_stick_y = gamepad1.left_stick_y;
         right_stick_x = gamepad1.right_stick_x;
@@ -157,9 +142,12 @@ public class TeleopModeDrive extends OpMode
         dpad_up = gamepad1.dpad_up;
         dpad_down = gamepad1.dpad_down;
         a = gamepad1.a;
+        float arm = gamepad1.right_stick_x;
+        y = gamepad1.y;
+       
 
         double power = rightTrigger + leftTrigger;
-
+        double servoPosition = right_stick_x;
         // Setting up Null Zone for the robot
         if (power < 0.05 & power > -0.05) {
             power = 0;
@@ -176,15 +164,19 @@ public class TeleopModeDrive extends OpMode
             moveLeft(power);
         } else if (left_stick_x > 0) {
             moveRight(power);
-        } else if ((right_stick_x > 0) & (left_stick_x == 0)) {
-            strafeRight(power);
-        } else if ((right_stick_x < 0) & (left_stick_x == 0)){
-            strafeLeft(power);
         }
         
-       while (a){
-          servoPosition = 1;
+       if (!a){
+           servo.setPosition(0.8);
        }
+       
+       while (a){
+           servo.setPosition(1);
+           break;
+       }
+       
+       
+        
         
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
