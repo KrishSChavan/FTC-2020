@@ -22,7 +22,7 @@ public class TeleopModeDrive extends OpMode
     private DcMotor leftBackMotor = null;
     private DcMotor rightBackMotor = null;
     private Servo servo = null;
-    double servoPosition = 0.8 ;
+    double servoPosition = 0.825 ;
   
     // Sets variables to 0, to reset them before they are used
     double leftTrigger = 0;
@@ -55,9 +55,9 @@ public class TeleopModeDrive extends OpMode
         leftBackMotor  = hardwareMap.get(DcMotor.class, "lbm");
         rightBackMotor = hardwareMap.get(DcMotor.class, "rbm");
         servo = hardwareMap.get(Servo.class, "armServo");
+
+
         
-        
-        servo.setPosition(0);
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -167,16 +167,13 @@ public class TeleopModeDrive extends OpMode
         }
         
        if (!a){
-           servo.setPosition(0.8);
+           servo.setPosition(0.825);
        }
        
        while (a){
            servo.setPosition(1);
            break;
        }
-       
-       
-        
         
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
