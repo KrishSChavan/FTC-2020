@@ -144,6 +144,8 @@ public class TeleopModeDrive extends OpMode
         a = gamepad1.a;
         float arm = gamepad1.right_stick_x;
         y = gamepad1.y;
+        left_bumper = gamepad1.left_bumper;
+        right_bumper = gamepad.right_bumper;
        
 
         double power = rightTrigger + leftTrigger;
@@ -173,6 +175,14 @@ public class TeleopModeDrive extends OpMode
        while (a){
            servo.setPosition(1);
            break;
+       }
+       
+       if (right_bumper){
+           servo.setPosition(0.825);
+       }
+       
+       if (left_bumper){
+           servo.setPosition(1);
        }
         
         // Show the elapsed game time and wheel power.
