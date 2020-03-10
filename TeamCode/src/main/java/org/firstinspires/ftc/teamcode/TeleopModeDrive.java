@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 
-    
+
 @TeleOp(name="Basic IT", group="Iterative Opmode")
 public class TeleopModeDrive extends OpMode
 {
@@ -23,7 +23,7 @@ public class TeleopModeDrive extends OpMode
     private DcMotor rightBackMotor = null;
     private Servo servo = null;
     double servoPosition = 0.825 ;
-  
+
     // Sets variables to 0, to reset them before they are used
     double leftTrigger = 0;
     double rightTrigger = 0;
@@ -39,7 +39,7 @@ public class TeleopModeDrive extends OpMode
     boolean y;
     boolean x;
     boolean b;
-    
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -57,7 +57,7 @@ public class TeleopModeDrive extends OpMode
         servo = hardwareMap.get(Servo.class, "armServo");
 
 
-        
+
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -119,8 +119,51 @@ public class TeleopModeDrive extends OpMode
         rightFrontMotor.setPower(power);
         rightBackMotor.setPower(power);
     }
-    
-  
+
+    void StrafeLeft(double power) {
+        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftFrontMotor.setPower(power);
+        leftBackMotor.setPower(power);
+        rightFrontMotor.setPower(power);
+        rightBackMotor.setPower(power);
+    }
+    void StrafeRight(double power) {
+        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setPower(power);
+        leftBackMotor.setPower(power);
+        rightFrontMotor.setPower(power);
+        rightBackMotor.setPower(power);
+    }
+    void StrafeCornerRight(double power) {
+        leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setPower(power);
+        rightBackMotor.setPower(power);
+    }
+    void StrafeCornerLeft(double power) {
+        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftBackMotor.setPower(power);
+        rightFrontMotor.setPower(power);
+    }
+    void SpinCounterClockwise(double power) {
+        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontMotor.setPower(power);
+        leftBackMotor.setPower(power);
+        rightFrontMotor.setPower(power);
+        rightBackMotor.setPower(power);
+    }
+
+
 
 
     /*
@@ -144,7 +187,7 @@ public class TeleopModeDrive extends OpMode
         a = gamepad1.a;
         float arm = gamepad1.right_stick_x;
         y = gamepad1.y;
-       
+
 
         double power = rightTrigger + leftTrigger;
         double servoPosition = right_stick_x;
@@ -165,16 +208,44 @@ public class TeleopModeDrive extends OpMode
         } else if (left_stick_x > 0) {
             moveRight(power);
         }
-        
+
        if (!a){
            servo.setPosition(0.825);
        }
-       
+
        while (a){
            servo.setPosition(1);
            break;
        }
-        
+
+        while (dpad_left = true)
+        {
+            StrafeLeft(power);
+            break;
+        }
+
+
+        while (dpad_right = true)
+        {
+            StrafeRight(power);
+            break;
+        }
+
+
+        while (dpad_down = true)
+        {
+            StrafeCornerRight(power);
+            break;
+        }
+
+
+        while (dpad_up = true)
+        {
+            StrafeCornerLeft(power);
+            break;
+        }
+
+
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "power (%.2f)", power);
