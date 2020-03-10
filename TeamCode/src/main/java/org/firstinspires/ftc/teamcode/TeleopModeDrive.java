@@ -209,14 +209,14 @@ public class TeleopModeDrive extends OpMode
             moveRight(power);
         }
 
-       if (!a){
-           servo.setPosition(0.825);
-       }
+        if (!a){
+            servo.setPosition(0.825);
+        }
 
-       while (a){
-           servo.setPosition(1);
-           break;
-       }
+        while (a){
+            servo.setPosition(1);
+            break;
+        }
 
         while (dpad_left = true)
         {
@@ -250,9 +250,9 @@ public class TeleopModeDrive extends OpMode
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "power (%.2f)", power);
     }
-        /*
-         * Code to run ONCE after the driver hits STOP
-         */
- public void stop(){
- }
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+    public void stop(){
+    }
 }
